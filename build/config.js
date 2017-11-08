@@ -165,6 +165,24 @@ const builds = {
     dest: resolve('packages/weex-template-compiler/build.js'),
     format: 'cjs',
     external: Object.keys(require('../packages/weex-template-compiler/package.json').dependencies)
+  },
+  // Runtime+compiler development build (Browser)
+  'qy-full-dev': {
+    entry: resolve('qy/entry-runtime-with-compiler.js'),
+    dest: resolve('dist/vue.qy.js'),
+    format: 'umd',
+    env: 'development',
+    alias: { he: './entity-decoder' },
+    banner
+  },
+  // Runtime+compiler production build  (Browser)
+  'qy-full-prod': {
+    entry: resolve('qy/entry-runtime-with-compiler.js'),
+    dest: resolve('dist/vue.qy.min.js'),
+    format: 'umd',
+    env: 'production',
+    alias: { he: './entity-decoder' },
+    banner
   }
 }
 

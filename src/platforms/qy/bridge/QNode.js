@@ -6,7 +6,7 @@ import { setAttr , removeAttr , addEvent , removeEvent } from './qnode-ops';
 let qnode_uid = 0;
 
 export default class QNode{
-    constructor( tagName string , vnode : VNode ) : void{
+    constructor( tagName : string , vnode : VNode ) : void{
         this.tagName = tagName;
         this.children = [];
         this.data = {};

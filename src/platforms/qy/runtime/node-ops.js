@@ -1,8 +1,8 @@
 /* @flow */
 
 import { namespaceMap } from 'web/util/index'
-import QNode from './QNode';
-import qnodeOps from '../bridge/qnode-ops';
+import QNode from '../bridge/QNode';
+import * as qnodeOps from '../bridge/qnode-ops';
 
 export function createElement (tagName: string, vnode: VNode): Element {
     return new QNode(tagName,vnode);

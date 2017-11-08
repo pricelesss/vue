@@ -13,7 +13,7 @@ const patchData = {
 export function addDirect(
     type : string ,
     op : string , 
-    qnode : QNode
+    filteredNode : object
 ) : void {
     /* istanbul ignore if */
     if(!patchData[`direct_${type}`]){
@@ -21,7 +21,7 @@ export function addDirect(
             console.error(`[qy error] : type ${type} error `)
         }
     }else{
-        patchData[`direct_${type}`].push({ op , qnode })
+        patchData[`direct_${type}`].push({ op , val : filteredNode })
     }
 }
 
@@ -33,7 +33,7 @@ export function isEmpty() : boolean{
     }
     return true;
 }
-export function clear : void(){
+export function clear() : void{
     for(let i in patchData){
         patchData[i].length = 0 ;
     }

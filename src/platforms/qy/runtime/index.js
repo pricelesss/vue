@@ -5,15 +5,15 @@ import config from 'core/config'
 import { extend, noop } from 'shared/util'
 import { mountComponent } from 'core/instance/lifecycle'
 import { devtools, inBrowser, isChrome } from 'core/util/index'
+import bridge from '../bridge/bridge'
 
 import {
-  query,
   mustUseProp,
   isReservedTag,
   isReservedAttr,
   getTagNamespace,
   isUnknownElement
-} from 'web/util/index'
+} from '../util/index'
 
 import { patch } from './patch'
 import platformDirectives from './directives/index'
@@ -35,10 +35,11 @@ Vue.prototype.__patch__ = patch
 
 // public mount method
 Vue.prototype.$mount = function (
-  el?: string | Element,
   hydrating?: boolean
 ): Component {
-  return mountComponent(this, el, hydrating)
+  // regist mount patch for root
+  if(this._uid === 0){bridge.registerPatch()};
+  return mountComponent(this, undefined, hydrating)
 }
 
 // devtools global hook

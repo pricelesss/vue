@@ -22,6 +22,7 @@
     "dev:weex": "rollup -w -c build/config.js --environment TARGET:weex-framework",
     "dev:weex:factory": "rollup -w -c build/config.js --environment TARGET:weex-factory",
     "dev:weex:compiler": "rollup -w -c build/config.js --environment TARGET:weex-compiler ",
+    "dev:qy": "rollup -w -c build/config.js --environment TARGET:qy-full-dev",
     "build": "node build/build.js",
     "build:ssr": "npm run build -- web-runtime-cjs,web-server-renderer",
     "build:weex": "npm run build -- weex",
