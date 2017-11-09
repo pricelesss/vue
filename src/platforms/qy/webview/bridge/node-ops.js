@@ -1,6 +1,7 @@
 /* @flow */
 
-import { sendEvent , FilteredEvent } from './event';
+import { callThreadEvent } from '../event/bridge';
+import { FilteredEvent } from '../event/FilteredEvent';
 import {
     setElm,
     removeElm,
@@ -37,9 +38,9 @@ export function setAttr( qnode ){
     let elm = getElm( qnode );
     // set value
     if(elm.tagName === 'INPUT' && qnode.key === 'value'){
-        elm.value = qnode.value;
+        elm.value = qnode.val;
     }else{
-        elm.setAttribute( qnode.key , qnode.value );
+        elm.setAttribute( qnode.key , qnode.val );
     }
 }
 export function removeAttr( qnode ){
@@ -58,11 +59,7 @@ export function setStyle( qnode ){
 export function addEvent( qnode ){
     let elm = getElm( qnode );
     elm.addEventListener( qnode.event ,(e)=>{
-        if(e.type !== 'change'){
-            e.stopPropagation();
-        }
-        console.log(qnode.tagName , qnode.event);
-        sendEvent(qnode,qnode.event,new FilteredEvent(e))
+        callThreadEvent(qnode,qnode.event,new FilteredEvent(e))
     })
 }
 

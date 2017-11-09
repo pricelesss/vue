@@ -4,8 +4,11 @@ import Vue from 'core/index'
 import config from 'core/config'
 import { extend, noop } from 'shared/util'
 import { mountComponent } from 'core/instance/lifecycle'
-import { devtools, inBrowser, isChrome } from 'core/util/index'
+import { devtools, inBrowser, isChrome, nextTick } from 'core/util/index'
+
+import { ctx } from '../util/index';
 import bridge from '../bridge/bridge'
+import api from '../api/api'
 
 import {
   mustUseProp,
@@ -38,8 +41,15 @@ Vue.prototype.$mount = function (
   hydrating?: boolean
 ): Component {
   // regist mount patch for root
-  if(this._uid === 0){bridge.registerPatch()};
+  bridge.readyToPatch();
   return mountComponent(this, undefined, hydrating)
+}
+
+// regist update patch
+const _update = Vue.prototype._update;
+Vue.prototype._update = function (vnode: VNode, hydrating?: boolean) {
+  _update.call(this,vnode,hydrating);
+  bridge.readyToPatch();
 }
 
 // devtools global hook
@@ -66,5 +76,9 @@ Vue.nextTick(() => {
     )
   }
 }, 0)
+
+// set global api and bridge
+ctx.__thread__ = bridge;
+ctx.__api__ = ctx.qiyiApi = api;
 
 export default Vue

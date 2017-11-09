@@ -1,4 +1,5 @@
 export function FilteredEvent(event){
+    // filter loop object in event , so that event can be stringify to JSON
     function TouchListFilter( touchList , allowed ){
         let FilteredTouchList = []
         let i = event.changedTouches.length;
@@ -23,18 +24,7 @@ export function FilteredEvent(event){
         this.touches = TouchListFilter( event.touches , ['clientX','clientY','identifier','pageX','pageY'] )
     }
     this.currentTarget = TargetFilter( event.currentTarget , ['dataset','id','offsetLeft','offsetTop'] );
-
-    //checkbox-group
-    if(/mp-checkbox-group/.test(event.currentTarget.className)){
-        this.detail = {value : []}
-        event.currentTarget.querySelectorAll('input[type="checkbox"]:checked').forEach(checkboxDom => {
-            this.detail.value.push(checkboxDom.value)
-        })
-    }else if(/mp-switch/.test(event.currentTarget.className)){
-        this.detail = {value : event.currentTarget.checked};
-    }else{
-        this.detail = { value : event.target.value }
-    }
+    this.detail = { value : event.target.value };
     this.target = TargetFilter( event.target , ['dataset','id','offsetLeft','offsetTop'] );
     this.timeStamp = event.timeStamp;
 }

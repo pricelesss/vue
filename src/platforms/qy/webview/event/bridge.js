@@ -6,7 +6,7 @@ import {
     isBrowser 
 } from '../util/util';
 
-export function nativeEventCall(
+export function callNativeEvent(
     typeContent,
     dataContent
 ):void{
@@ -17,7 +17,7 @@ export function nativeEventCall(
     executeJS('native',JSON.stringify(event))
 }
 
-export function threadEventCall(
+export function callThreadEvent(
     qnode : Object,
     event : string,
     params ?: Object
@@ -27,7 +27,7 @@ export function threadEventCall(
         str += `_uid:${qnode._uid}`
     }
     if(event){
-        str += `,event:${event}`
+        str += `,event:'${event}'`
     }
     if(params){
         str += `,params:${JSON.stringify(params)}`
@@ -41,7 +41,7 @@ export function executeJS(target:string,scriptContent:string){
     if(target === 'thread'){
         isIosApp && window.webkit.messageHandlers.emit.postMessage(scriptContent);
         isAndroidApp && console.log("execute:" + scriptContent);
-        isBrowser && eval(scriptContent);
+        isBrowser && (new Function(scriptContent))();
     }else if(target === 'native'){
         isIosApp && window.webkit.messageHandlers.native_call.postMessage(scriptContent);
         isAndroidApp && console.log("hal:" + scriptContent);

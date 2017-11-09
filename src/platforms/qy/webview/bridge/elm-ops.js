@@ -1,16 +1,16 @@
 /* @flow */
 
 // html element 操作相关
-const elms = {};
+const elms = new Object();
 
 export function createElm( qnode ){
     let elm;
-    if(qnode.tagName == 'text'){
+    if(qnode.tag == 'text'){
         elm = document.createTextNode(qnode.text)
-    }else if( qnode.tagName == 'comment' ){
+    }else if( qnode.tag == 'comment' ){
         elm = document.createComment( qnode.text || qnode._uid );
     }else{
-        elm = document.createElement( qnode.tagName );
+        elm = document.createElement( qnode.tag );
         elm.setAttribute( '_uid',qnode._uid );
     }
     setElm( qnode._uid , elm );
@@ -29,7 +29,7 @@ export function getElm( qnode ){
 export function getParentElm( qnode ){
     return elms[qnode.parent._uid] || createElm({
         _uid : qnode.parent._uid,
-        tagName : qnode.parent.tagName
+        tag : qnode.parent.tag
     })
 }
 
@@ -39,7 +39,7 @@ export function getElmByUid( _uid ){
 export function getRefElm( qnode ){
     return elms[qnode.ref._uid] || createElm({
         _uid : qnode.ref._uid,
-        tagName : qnode.ref.tagName
+        tag : qnode.ref.tag
     })
 }
 export default elms;

@@ -166,19 +166,35 @@ const builds = {
     format: 'cjs',
     external: Object.keys(require('../packages/weex-template-compiler/package.json').dependencies)
   },
-  // Runtime+compiler development build (Browser)
+  // Runtime+compiler development build (qy)
   'qy-full-dev': {
     entry: resolve('qy/entry-runtime-with-compiler.js'),
-    dest: resolve('dist/vue.qy.js'),
+    dest: resolve('dist/qy.thread.js'),
     format: 'umd',
     env: 'development',
     alias: { he: './entity-decoder' },
     banner
   },
-  // Runtime+compiler production build  (Browser)
+  // Runtime+compiler production build  (qy)
   'qy-full-prod': {
     entry: resolve('qy/entry-runtime-with-compiler.js'),
-    dest: resolve('dist/vue.qy.min.js'),
+    dest: resolve('dist/qy.thread.min.js'),
+    format: 'umd',
+    env: 'production',
+    alias: { he: './entity-decoder' },
+    banner
+  },
+  'qy-webview-dev': {
+    entry: resolve('qy/webview/webview.js'),
+    dest: resolve('dist/qy.webview.js'),
+    format: 'umd',
+    env: 'development',
+    alias: { he: './entity-decoder' },
+    banner
+  },
+  'qy-webview-prod': {
+    entry: resolve('qy/webview/webview.js'),
+    dest: resolve('dist/qy.webview.min.js'),
     format: 'umd',
     env: 'production',
     alias: { he: './entity-decoder' },

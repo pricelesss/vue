@@ -40,7 +40,7 @@ export function appendCh( qnode : QNode ):void{
         _uid : qnode._uid,
         parent : {
             _uid : qnode.parentNode._uid,
-            tagName : qnode.parentNode.tagName,
+            tag : qnode.parentNode.tagName,
         },
         tag : qnode.tagName
     }
@@ -72,7 +72,7 @@ export function insertBefore(
         }
     }
     isDef(qnode.text) && ( node.text = qnode.text );
-    addDomDirect( 'insertBefore' , node )
+    addDirect( 'dom' , 'insertBefore' , node )
 }
 export function setAttr( qnode , key , value ){
     addDirect( 'attr' , 'setAttr' , {

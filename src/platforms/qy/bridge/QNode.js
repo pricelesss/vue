@@ -1,16 +1,19 @@
 /* @flow */
 
 import { isDef } from 'core/util/index'
-import { setAttr , removeAttr , addEvent , removeEvent } from './qnode-ops';
+import { setStyle , setAttr , removeAttr , addEvent , removeEvent } from './qnode-ops';
 
 let qnode_uid = 0;
 
+
 export default class QNode{
     constructor( tagName : string , vnode : VNode ) : void{
+        this._uid = qnode_uid++ ;
         this.tagName = tagName;
         this.children = [];
         this.data = {};
         this.attrs = {};
+        this.style = new Style();
         if(vnode){
             if(vnode.text){this.text = vnode.text};
             if(vnode.data){this.data = vnode.data};
@@ -19,7 +22,7 @@ export default class QNode{
     }
     setStyle():void{
         if(this.style){
-            setStyle(this.style);
+            setStyle(this,this.style);
         }
     }
     setAttribute( key : string , value : string ) : void{
@@ -42,6 +45,15 @@ export default class QNode{
         capture : boolean
     ):void{
         removeEvent( this , event , capture )
+    }
+}
+
+class Style{
+    constructor(){
+
+    }
+    setProperty(name,value,type){
+        this[name] = value;
     }
 }
 

@@ -1,6 +1,6 @@
 /* @flow */
 
-import { getStyle, normalizeStyleBinding } from '../../util/style'
+import { getStyle, normalizeStyleBinding , isHtmlStyle } from '../../util/style'
 import { cached, camelize, extend, isDef, isUndef } from 'shared/util'
 
 const cssVarRE = /^--/
@@ -28,17 +28,15 @@ const setProp = (el, name, val) => {
 
 const vendorNames = ['Webkit', 'Moz', 'ms']
 
-let emptyStyle
 const normalize = cached(function (prop) {
-  //emptyStyle = emptyStyle || document.createElement('div').style
   prop = camelize(prop)
-  if (prop !== 'filter' && (prop in emptyStyle)) {
+  if (prop !== 'filter' && (isHtmlStyle(prop))) {
     return prop
   }
   const capName = prop.charAt(0).toUpperCase() + prop.slice(1)
   for (let i = 0; i < vendorNames.length; i++) {
     const name = vendorNames[i] + capName
-    if (name in emptyStyle) {
+    if (isHtmlStyle(name)) {
       return name
     }
   }

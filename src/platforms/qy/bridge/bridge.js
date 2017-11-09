@@ -1,15 +1,20 @@
 /* @flow */
 import { nextTick } from 'core/util/index';
-import { inApp , inWeb , ctx } from './bridge-util';
+import { inApp , inWeb , ctx } from '../util/index';
 import bridgePatch from './bridge-patch';
 import { triggerEvent } from './bridge-event';
 
 const bridge = new Object({
+    wait : false,
     // patch to webview , patchData is the main carrie
-    registerPatch : ():void=>{
-        nextTick(()=>{
-            bridge.doPatch();
-        },10)
+    readyToPatch : ():void=>{
+        if(!bridge.wait){
+            bridge.wait = true;
+            nextTick(()=>{
+                bridge.doPatch()
+                bridge.wait = false
+            })
+        }
     },
     doPatch : ():void =>{
         if(bridgePatch.isEmpty()){
@@ -20,14 +25,19 @@ const bridge = new Object({
             global.__base__.postPatch(`__bridge__.on_recv_patch_command(${patchJson})`);
         }
         if( inWeb ){
-            window.__bridge__.on_recv_patch_command(bridgePatch.patchData:object);
+            // if webview is not ready
+            if(typeof window.__bridge__ === 'undefined'){
+                window.__patchQueue__ = (window.patchQueue||[]).push(bridgePatch.patchData);
+            }else{
+                window.__bridge__.on_recv_patch_command(bridgePatch.patchData:object);
+            }
         }        
         bridgePatch.clear();
     },
     // get event call from webview
     getEvent : (eventObj):void=>{
+        typeof console !== 'undefined' && console.log(eventObj)
         triggerEvent( eventObj );
-        bridge.registerPatch();
     }
 })
 

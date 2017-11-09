@@ -4,7 +4,7 @@ import { isDef, isUndef, isObject } from 'shared/util';
 
 const patchData = {
     // set root for root element
-    direct_dom : [{op:'setRoot',val : {_uid : 0 , tagName : 'div'}}],
+    direct_dom : [{op:'setRoot',val : {_uid : 0 , tag : 'div'}}],
     direct_attr : [],
     direct_com : [],
     direct_native : []

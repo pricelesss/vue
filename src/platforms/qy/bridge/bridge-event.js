@@ -24,9 +24,13 @@ export function removeEvent(
 }
 
 export function triggerEvent( eventObj ) : void {
+    let handlers;
     if(eventKeep[eventObj._uid] 
-       && typeof eventKeep[eventObj._uid][eventObj.event] === 'function'){
-           eventKeep[eventObj._uid][eventObj.event].call(null,eventObj.params)
+       && (handlers = eventKeep[eventObj._uid][eventObj.event])
+        && handlers.length > 0){
+            handlers.forEach(e=>{
+                e.call(null,eventObj.params)
+            })
     }
 }
 export default eventKeep;
